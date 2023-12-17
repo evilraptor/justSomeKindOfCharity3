@@ -42,7 +42,6 @@ public class Model {
     public boolean isFieldFull() {
         for (int i = 0; i < fieldHeight; i++) {
             for (int j = 0; j < fieldWidth; j++) {
-
                 if (cellCondition[i][j] == 0) return false;
             }
         }
