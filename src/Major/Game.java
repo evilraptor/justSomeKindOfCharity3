@@ -3,8 +3,8 @@ package Major;
 import MVC.Controller;
 
 public class Game {
-    private final int fieldWidth = 3;
-    private final int fieldHeight = 3;
+    private final int fieldWidth = 9;
+    private final int fieldHeight = 9;
     private final int coloursCount = 3;
     //FIXME mb needs to be through config||start input
 

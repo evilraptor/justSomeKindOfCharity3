@@ -114,7 +114,7 @@ public class Controller {
                 }
                 if (lineFound) {
                     score = score + (2 * 5);
-                    for (int k = 1; k < 5; k++) deleteCell(i, j + k);
+                    for (int k = 0; k < 5; k++) deleteCell(i, j + k);
                     controllerView.setScore(score);
                     return true;
                 }
@@ -136,7 +136,7 @@ public class Controller {
                 }
                 if (lineFound) {
                     score = score + (2 * 5);
-                    for (int k = 1; k < 5; k++) deleteCell(i + k, j);
+                    for (int k = 0; k < 5; k++) deleteCell(i + k, j);
                     controllerView.setScore(score);
                     return true;
                 }
@@ -158,7 +158,7 @@ public class Controller {
                 }
                 if (lineFound) {
                     score = score + (2 * 5);
-                    for (int k = 1; k < 5; k++) deleteCell(i + k, j + k);
+                    for (int k = 0; k < 5; k++) deleteCell(i + k, j + k);
                     controllerView.setScore(score);
                     return true;
                 }
@@ -180,7 +180,7 @@ public class Controller {
                 }
                 if (lineFound) {
                     score = score + (2 * 5);
-                    for (int k = 1; k < 5; k++) deleteCell(i - k, j + k);
+                    for (int k = 0; k < 5; k++) deleteCell(i - k, j + k);
                     controllerView.setScore(score);
                     return true;
                 }
