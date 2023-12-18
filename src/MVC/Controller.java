@@ -18,9 +18,12 @@ public class Controller {
     private boolean isExitPressed = false;
     private int chosenCell[];
     private int coloursCount;
+    private int nextCircles[];
+    private int circleSpawnCounter = 0;
 
     public Controller(int xInputValue, int yInputValue, int inputCountOfColours) {
         chosenCell = new int[2];
+        nextCircles = new int[3];
         fieldWidth = xInputValue;
         fieldHeight = yInputValue;
         coloursCount = inputCountOfColours;
@@ -29,6 +32,7 @@ public class Controller {
         //controllerView.initialize();
         setMouseListenerOnCells();
         setMouseListenerOnRestart();
+        fillRandomCircles();
         for (int i = 0; i < 3; i++) placeRandomCircle();
         while (true) {
             if (!makeTurn()) break;
@@ -39,9 +43,11 @@ public class Controller {
         if (isGameEnded()) return false;
         if (isCellMoved) {
             isCellMoved = false;
+            fillRandomCircles();
             for (int c = 0; c < 3; c++) {
                 checkLines();
                 if (!placeRandomCircle()) return false;
+                if (isGameEnded()) return false;
             }
             enableButtons = true;
             return true;
@@ -61,16 +67,31 @@ public class Controller {
         if (isGameEnded()) return false;
         while (true) {
             //if (!checkLines()) return false;
+            if (isGameEnded()) return false;
             Random random = new Random();
             int x = random.nextInt(fieldWidth);
             int y = random.nextInt(fieldHeight);
-            int colour = random.nextInt(coloursCount) + 1;
-            if (placeCircle(x, y, colour)) {
+            //int colour = random.nextInt(coloursCount) + 1;
+            //if (placeCircle(x, y, colour)) {
+            if (placeCircle(x, y, nextCircles[circleSpawnCounter])) {
                 checkLines();
                 System.out.println("random circle placed on:" + x + " " + y);
+                if (circleSpawnCounter == 2) circleSpawnCounter = 0;
+                else circleSpawnCounter++;
                 return true;
             }
         }
+    }
+
+    private void fillRandomCircles() {
+        for (int c = 0; c < 3; c++) {
+            Random random = new Random();
+            int colour = random.nextInt(coloursCount) + 1;
+            nextCircles[c] = colour;
+        }
+        controllerView.setNextCircle1(nextCircles[0]);
+        controllerView.setNextCircle2(nextCircles[1]);
+        controllerView.setNextCircle3(nextCircles[2]);
     }
 
     private boolean checkLines() {
@@ -92,7 +113,7 @@ public class Controller {
                     }
                 }
                 if (lineFound) {
-                    score=score+(2*5);
+                    score = score + (2 * 5);
                     for (int k = 1; k < 5; k++) deleteCell(i, j + k);
                     controllerView.setScore(score);
                     return true;
@@ -114,7 +135,7 @@ public class Controller {
                     }
                 }
                 if (lineFound) {
-                    score=score+(2*5);
+                    score = score + (2 * 5);
                     for (int k = 1; k < 5; k++) deleteCell(i + k, j);
                     controllerView.setScore(score);
                     return true;
@@ -136,7 +157,7 @@ public class Controller {
                     }
                 }
                 if (lineFound) {
-                    score=score+(2*5);
+                    score = score + (2 * 5);
                     for (int k = 1; k < 5; k++) deleteCell(i + k, j + k);
                     controllerView.setScore(score);
                     return true;
@@ -158,7 +179,7 @@ public class Controller {
                     }
                 }
                 if (lineFound) {
-                    score=score+(2*5);
+                    score = score + (2 * 5);
                     for (int k = 1; k < 5; k++) deleteCell(i - k, j + k);
                     controllerView.setScore(score);
                     return true;
@@ -204,8 +225,8 @@ public class Controller {
                                         isCellMoved = true;
                                         isCellChose = false;
                                         System.out.println();
-                                        enableButtons = false;
-                                        makeTurn();
+                                        //enableButtons = false;
+                                        if (!makeTurn()) System.out.println("That's all...");
                                     }
                                 }
                             } else {
@@ -255,6 +276,7 @@ public class Controller {
                         controllerView.setButtonIcon(i, j, 0);
                     }
                 }
+                for (int i = 0; i < 3; i++) placeRandomCircle();
             }
 
             @Override

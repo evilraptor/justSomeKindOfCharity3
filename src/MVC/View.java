@@ -9,22 +9,17 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-public class View implements Runnable {
+public class View {
     private int fieldWidth;
     private int fieldHeight;
     JFrame frame = new JFrame("The Game");
     public JButton[][] cells;
     private int coloursCount;
     private ImageIcon[] containerOfIcons;
-    private JButton restartButton,exitButton;
+    private JButton restartButton, exitButton, nextCircle1, nextCircle2, nextCircle3;
     private JTextField scoreTextArea;
-    private boolean isExitPressed=false;
-    private boolean freeExit=false;
-
-    @Override
-    public void run() {
-        initialize();
-    }
+    private boolean isExitPressed = false;
+    private boolean freeExit = false;
 
     public void initialize() {
         cells = new JButton[fieldWidth][fieldHeight];
@@ -35,18 +30,18 @@ public class View implements Runnable {
                 frame.add(cells[i][j]);
             }
         }
-        restartButton=new JButton();
-        restartButton.setBounds(fieldWidth*100+20,120,150,50);
+        restartButton = new JButton();
+        restartButton.setBounds(fieldWidth * 100 + 20, 120, 150, 50);
         restartButton.setText("restart");
         frame.add(restartButton);
-        exitButton=new JButton();
-        exitButton.setBounds(fieldWidth*100+20,200,150,50);
+        exitButton = new JButton();
+        exitButton.setBounds(fieldWidth * 100 + 20, 200, 150, 50);
         exitButton.setText("exit");
         frame.add(exitButton);
         setMouseListenerOnExit();
 
-        scoreTextArea= new JTextField(10);
-        scoreTextArea.setBounds(fieldWidth*100+20,50, 150, 50);
+        scoreTextArea = new JTextField(10);
+        scoreTextArea.setBounds(fieldWidth * 100 + 20, 50, 150, 50);
         scoreTextArea.setText("0");
         frame.add(scoreTextArea);
 
@@ -56,13 +51,23 @@ public class View implements Runnable {
         frame.setVisible(true);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        nextCircle1 = new JButton();
+        nextCircle1.setBounds(fieldWidth * 100 + 20, 10, 40, 40);
+        frame.add(nextCircle1);
+        nextCircle2 = new JButton();
+        nextCircle2.setBounds(fieldWidth * 100 + 70, 10, 40, 40);
+        frame.add(nextCircle2);
+        nextCircle3 = new JButton();
+        nextCircle3.setBounds(fieldWidth * 100 + 120, 10, 40, 40);
+        frame.add(nextCircle3);
     }
 
     public View(int xInputValue, int yInputValue, int colours) {
         fieldWidth = xInputValue;
         fieldHeight = yInputValue;
         coloursCount = colours;
-        run();
+        initialize();
     }
 
     private ImageIcon[] createContainerOfIcons(int count) {
@@ -97,23 +102,29 @@ public class View implements Runnable {
     ImageIcon[] getContainerOfIcons() {
         return containerOfIcons;
     }
-    public void setScore(int score){scoreTextArea.setText(String.valueOf(score));}
+
+    public void setScore(int score) {
+        scoreTextArea.setText(String.valueOf(score));
+    }
 
     public void setButtonIcon(int x, int y, int i) {
         cells[x][y].setIcon(containerOfIcons[i]);
     }
-    public JButton getRestartButton(){return restartButton;}
+
+    public JButton getRestartButton() {
+        return restartButton;
+    }
 
     private void setMouseListenerOnExit() {
         exitButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(freeExit)System.exit(0);
-                freeExit=true;
+                if (freeExit) System.exit(0);
+                freeExit = true;
                 isExitPressed = true;
-                JButton notification= new JButton();
+                JButton notification = new JButton();
                 //notification.setBounds(fieldWidth*50,fieldHeight*50, 150, 50);
-                notification.setBounds(fieldWidth*100,250,200,25);
+                notification.setBounds(fieldWidth * 100, 250, 200, 25);
                 notification.setText("exit? auto quit in 10sec");
                 frame.add(notification);
                 frame.revalidate();
@@ -159,5 +170,15 @@ public class View implements Runnable {
 
             }
         });
+    }
+
+    public void setNextCircle1(int colour) {
+        nextCircle1.setIcon(containerOfIcons[colour]);
+    }
+    public void setNextCircle2(int colour) {
+        nextCircle2.setIcon(containerOfIcons[colour]);
+    }
+    public void setNextCircle3(int colour) {
+        nextCircle3.setIcon(containerOfIcons[colour]);
     }
 }
